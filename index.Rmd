@@ -1,0 +1,37 @@
+---
+title: "Mining the National Diet and Nutrition Survey Rolling Programme (NDNS RP) data"
+subtitle: "When, what, where you eat."
+author: "王　超辰 | Chaochen Wang"
+date: "2019-09-17 18:00~19:30 @AMU・疫学懇話会"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    lib_dir: libs
+    nature:
+      countdown: 60000
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+---
+
+
+```{r xaringan-themer, include = FALSE}
+library(xaringanthemer)
+mono_light(
+  base_color = "#1c5253",
+  header_font_google = google_font("Josefin Sans"),
+  # text_font_google   = google_font("M PLUS Rounded 1c", "300", "300i"),
+  text_font_google = google_font("Noto Sans JP", "300", "300i"), 
+  code_font_google   = google_font("Droid Mono"),
+  text_bold_color = "#B03A2E",
+  link_color = "#2c7fb8",
+  title_slide_background_image = "pic/",
+  inverse_text_shadow = TRUE
+)
+# write_xaringan_theme(text_bold_color = "#FF4333")
+```
+
+
+
+---

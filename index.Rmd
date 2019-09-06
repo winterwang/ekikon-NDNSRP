@@ -32,6 +32,17 @@ mono_light(
 # write_xaringan_theme(text_bold_color = "#FF4333")
 ```
 
+class: middle
 
+# Outline of today's talk 
+
+--
+- Relationship between **food consumed** and **eating location** for UK adolescents
+
+--
+- Relationship between **food consumed** and **eating time** for UK adults and their relationships according to diabetes status 
+
+--
+- 
 
 ---

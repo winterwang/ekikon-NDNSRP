@@ -4,6 +4,7 @@
     <title>Mining the National Diet and Nutrition Survey Rolling Programme (NDNS RP) data</title>
     <meta charset="utf-8" />
     <meta name="author" content="王　超辰 | Chaochen Wang" />
+    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
@@ -50,25 +51,106 @@ class: middle
 
 - For example, in the following table gives the frequency of consumption of three healthy food groups at each location in the NDNS RP data among teenagers (age: 11~19 years):
 
+&lt;table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Others &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Home &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; School_work &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Sum &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Fruit &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 455 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2595 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 839 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3889 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Salad and raw veg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 662 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2556 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 607 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3825 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Veg not raw &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 698 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6122 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 376 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7196 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Sum &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1815 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11273 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1822 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14910 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
-```r
-library(knitr)
-library(kableExtra)
+
+---
+class: middle 
+
+## Usually, we will conduct a `\(\chi^2\)` test. 
+
+&lt;table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Others &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Home &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; School_work &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Sum &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Fruit &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 455 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2595 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 839 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3889 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Salad and raw veg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 662 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2556 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 607 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3825 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Veg not raw &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 698 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6122 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 376 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7196 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Sum &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1815 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11273 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1822 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14910 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 
-dt &lt;- 
-```
+$$
+\chi^2 = \sum\frac{(\text{Observed} - \text{Expected})^2}{\text{Expected}} \sim \chi^s_{(m -1)\times(n-1)}
+$$
 
+--
+### To look for evidence against the null hypothesis that **there is no difference across the columns or rows**.
 
-
-```
-                   Locat_type
-mfgLab               Others   Home  School_work  Total
-  Fruit                 455   2595          839   3889
-  Salad and raw veg     662   2556          607   3825
-  Veg not raw           698   6122          376   7196
-  Total                1815  11273         1822  14910
-```
+---
+class: middle
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

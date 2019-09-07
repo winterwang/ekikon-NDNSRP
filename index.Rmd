@@ -61,22 +61,60 @@ class: middle
 
 - For example, in the following table gives the frequency of consumption of three healthy food groups at each location in the NDNS RP data among teenagers (age: 11~19 years):
 
-```{r eval = F}
+```{r eval = T, echo=FALSE, message=FALSE}
 library(knitr)
 library(kableExtra)
+library(tidyverse)
+load("../CA-NDNSRP/H_teenFood.Rdata")
+
+TableFoogGroup <- H_teenFood %>% 
+  ungroup() %>% 
+  group_by(mfgLab) %>% 
+  summarise(n = n(), meanHpoint = mean(H_points, na.rm = T), mfgCalories = sum(Energykcal)) %>% 
+  arrange(-mfgCalories) %>% 
+  mutate(n.freq = paste0(round(100 * n/sum(n), 2), "%"))  %>% 
+  mutate(cal.Prop = paste0(round(100 * mfgCalories/sum(mfgCalories), 2), "%"))  %>% 
+  mutate(calprop = mfgCalories/sum(mfgCalories)) %>% 
+  mutate(calcumprop = paste0(round(100 * cumsum(calprop), 3), "%")) %>% 
+  select(-calprop) 
 
 
-dt <- 
+TableFoogGroup <- TableFoogGroup %>% 
+  mutate(healthy     = meanHpoint < -2, 
+         lesshealthy = meanHpoint > 4, 
+         neutral     = (meanHpoint <= 4) & (meanHpoint >= -2))
+
+# TableFoogGroup %>% 
+#   filter(healthy) %>% 
+#   select(-lesshealthy, -neutral, -calcumprop, -healthy)
+healthyfg <- H_teenFood[H_teenFood$HealthFoodGr == "Healthy", ]
+freqtab <- xtabs(~healthyfg$mfgLab + healthyfg$Locat_type)
+freqtab <- addmargins(freqtab)
+as.data.frame.matrix(freqtab) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
 
+---
+class: middle 
 
+## Usually, we will conduct a $\chi^2$ test. 
+
+```{r eval = T, echo=FALSE, message=FALSE}
+as.data.frame.matrix(freqtab) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ```
-                   Locat_type
-mfgLab               Others   Home  School_work  Total
-  Fruit                 455   2595          839   3889
-  Salad and raw veg     662   2556          607   3825
-  Veg not raw           698   6122          376   7196
-  Total                1815  11273         1822  14910
-```
+
+
+$$
+\chi^2 = \sum\frac{(\text{Observed} - \text{Expected})^2}{\text{Expected}} \sim \chi^s_{(m -1)\times(n-1)}
+$$
+
+--
+### To look for evidence against the null hypothesis that **there is no difference across the columns or rows**.
+
+---
+class: middle
 

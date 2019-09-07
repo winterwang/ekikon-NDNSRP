@@ -37,12 +37,46 @@ class: middle
 # Outline of today's talk 
 
 --
+### Correspondence analyses:
+
+
 - Relationship between **food consumed** and **eating location** for UK adolescents
 
---
-- Relationship between **food consumed** and **eating time** for UK adults and their relationships according to diabetes status 
+
+- Relationship between **food consumed** and **eating time** for UK adults according to their diabetes status 
 
 --
-- 
+
+### Multilevel Latent Class Analysis:
+
+- Relationship between **carbohydrate consumption** and **eating time** for UK adults. 
 
 ---
+class: middle
+
+# Some intuition about correspondence analysis  (CA)
+
+--
+- CA is a method for investigating the relationship in a **two-dimensional contingency table**.
+
+- For example, in the following table gives the frequency of consumption of three healthy food groups at each location in the NDNS RP data among teenagers (age: 11~19 years):
+
+```{r eval = F}
+library(knitr)
+library(kableExtra)
+
+
+dt <- 
+```
+
+
+
+```
+                   Locat_type
+mfgLab               Others   Home  School_work  Total
+  Fruit                 455   2595          839   3889
+  Salad and raw veg     662   2556          607   3825
+  Veg not raw           698   6122          376   7196
+  Total                1815  11273         1822  14910
+```
+

@@ -109,7 +109,7 @@ as.data.frame.matrix(freqtab) %>%
 
 
 $$
-\chi^2 = \sum\frac{(\text{Observed} - \text{Expected})^2}{\text{Expected}} \sim \chi^s_{(m -1)\times(n-1)}
+\chi^2 = \sum\frac{(\text{Observed} - \text{Expected})^2}{\text{Expected}} \sim \chi^2_{(m -1)\times(n-1)}
 $$
 
 --
@@ -117,4 +117,14 @@ $$
 
 ---
 class: middle
+# Hypothesis of independence
+
+The null hypothesis of no difference across the columns or rows is also called:
+
+- Hypothesis of independence 
+
+OR 
+
+- Homogeneity assumption
+
 

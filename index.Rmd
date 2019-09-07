@@ -1,6 +1,6 @@
 ---
 title: "Mining the National Diet and Nutrition Survey Rolling Programme (NDNS RP) data"
-subtitle: "When, what, where you eat."
+subtitle: "Where, when, what you eat."
 author: "王　超辰 | Chaochen Wang"
 date: "2019-09-17 18:00~19:30 @AMU・疫学懇話会"
 output:
@@ -59,7 +59,7 @@ class: middle
 --
 - CA is a method for investigating the relationship in a **two-dimensional contingency table**.
 
-- For example, in the following table gives the frequency of consumption of three healthy food groups at each location in the NDNS RP data among teenagers (age: 11~19 years):
+- For example, the following table gives the frequency of consumption of three healthy food groups at each location in the NDNS RP data among teenagers (age: 11~19 years):
 
 ```{r eval = T, echo=FALSE, message=FALSE}
 library(knitr)
@@ -87,12 +87,14 @@ TableFoogGroup <- TableFoogGroup %>%
 # TableFoogGroup %>% 
 #   filter(healthy) %>% 
 #   select(-lesshealthy, -neutral, -calcumprop, -healthy)
-healthyfg <- H_teenFood[H_teenFood$HealthFoodGr == "Healthy", ]
+healthyfg <- H_teenFood %>% 
+  filter(mfgLab %in% c("Fruit", "Veg not raw", "Brown Bread"))
 freqtab <- xtabs(~healthyfg$mfgLab + healthyfg$Locat_type)
-freqtab <- addmargins(freqtab)
-as.data.frame.matrix(freqtab) %>%
+freqtabmg <- addmargins(freqtab)
+as.data.frame.matrix(freqtabmg) %>%
   kable() %>%
-  kable_styling(bootstrap_options = c("striped", "hover"))
+  kable_styling(bootstrap_options = c("striped", "hover")) %>% 
+  column_spec(1, bold = T) 
 ```
 
 
@@ -102,9 +104,10 @@ class: middle
 ## Usually, we will conduct a $\chi^2$ test. 
 
 ```{r eval = T, echo=FALSE, message=FALSE}
-as.data.frame.matrix(freqtab) %>%
+as.data.frame.matrix(freqtabmg) %>%
   kable() %>%
-  kable_styling(bootstrap_options = c("striped", "hover"))
+  kable_styling(bootstrap_options = c("striped", "hover")) %>% 
+  column_spec(1, bold = T) 
 ```
 
 
@@ -121,10 +124,132 @@ class: middle
 
 The null hypothesis of no difference across the columns or rows is also called:
 
+.pull-left[
 - Hypothesis of independence 
+]
 
-OR 
-
+.pull-right[
 - Homogeneity assumption
+]
+
+```{r}
+chisq.test(freqtab)
+```
 
 
+We conclude that **there is dependency between the columns (food groups) and the rows (locations)**. 
+
+---
+class: middle
+
+## But what exactly does this dependency mean?
+
+
+```{r eval = T, echo=FALSE, message=FALSE}
+as.data.frame.matrix(freqtabmg) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))%>% 
+  column_spec(1, bold = T) 
+```
+
+### Can we get **more information** from this contingency table? How?
+
+--
+### Yes! we can visualize their relationships!
+
+
+---
+class: middle 
+
+## Step 1 - convert the frequency cell to proportions
+
+```{r echo = FALSE}
+Xp <- as.matrix(freqtab) / sum(as.matrix(freqtab))
+Xpmg <- addmargins(Xp)
+Xpmg <- signif(Xpmg, digits = 3)
+row.names(Xpmg) <- c("Brown Bread", "Fruit", "Veg not raw", "c: col masses")
+colnames(Xpmg) <- c("Others", "Home", "School_work", "r: row masses")
+
+as.data.frame.matrix(Xpmg) %>%
+  kable(caption = "Matrix X. Observed Cell Proportions") %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>% 
+  column_spec(1, bold = T) 
+```
+
+- Row masses: $\mathbf{r} = \mathbf{X1}$ 
+
+```{r}
+r <- Xp %*% matrix(c(1, 1, 1), nrow = 3)
+```
+
+- Column masses: $\mathbf{c} = \mathbf{X}^T\mathbf{1}$
+
+```{r}
+c <- t(Xp)  %*% matrix(c(1, 1, 1), nrow = 3)
+```
+
+---
+class: middle 
+## Step 2 - The variation of each cell in matrix X from its expected value
+
+$$\text{Deviation} = \mathbf{X} - \mathbf{rc}^T$$
+
+```{r echo=FALSE}
+Deviation <- Xp - r %*% t(c)
+library(formattable)
+Deviation <- addmargins(Deviation)
+Dev <- sprintf("%.5f", Deviation)
+Dev <- matrix(Dev, nrow = 4)
+rownames(Dev) <- rownames(Deviation)
+colnames(Dev) <- colnames(Deviation)
+as.data.frame.matrix(Dev) %>%
+  kable(caption = "Deviations from Expected") %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>% 
+  column_spec(1, bold = T) 
+```
+
+
+
+
+---
+class: middle 
+
+## Step 2 - Calculate row profile, and column profile
+
+.pull-left[
+
+- Percentages of location for each food was eaten:
+
+```{r echo=FALSE}
+Dr <- diag(as.numeric(r))
+Dc <- diag(as.numeric(c))
+R <- solve(Dr) %*% Xp
+C <- solve(Dc) %*% t(Xp)
+
+Rmg <- addmargins(R)[-4,]
+Rmg <- signif(Rmg, digits = 3)
+rownames(Rmg) <- NULL
+as.data.frame.matrix(Rmg) %>%
+  kable(caption = "Matrix R. Row Profile") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+$$\mathbf{R} = \mathbf{D}^{-1}_r\mathbf{X}$$
+]
+
+.pull-right[
+- Percentages of food was eaten at each location:
+
+```{r echo = FALSE}
+C <- solve(Dc) %*% t(Xp)
+
+Cmg <- addmargins(t(C))[,-4]
+Cmg <- signif(Cmg, digits = 3)
+colnames(Cmg) <- c("Others", "Home", "School")
+as.data.frame.matrix(Cmg) %>%
+  kable(caption = "Matrix C. Column Profile") %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>% 
+  column_spec(1, bold = T) 
+```
+$$\mathbf{C} = \mathbf{D}^{-1}_r\mathbf{X}^T$$
+
+]

@@ -243,40 +243,40 @@ class: middle
  &lt;thead&gt;
   &lt;tr&gt;
    &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Others &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Home &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; School_work &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; r: row masses &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Others &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Home &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; School_work &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; r: row masses &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;font-weight: bold;"&gt; Brown Bread &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.01 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.02 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.08 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0079 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0511 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0168 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0758 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;font-weight: bold;"&gt; Fruit &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.04 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.22 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.07 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.32 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0379 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.2160 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0700 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.3240 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;font-weight: bold;"&gt; Veg not raw &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.06 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.51 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.03 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.60 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0582 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.5100 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0313 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;font-weight: bold;"&gt; c: col masses &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.10 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.78 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.12 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.1040 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.7780 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.1180 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1.0000 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -297,7 +297,7 @@ c &lt;- t(Xp)  %*% matrix(c(1, 1, 1), nrow = 3)
 
 ---
 class: middle 
-## Step 2 - The variation of each cell in matrix X from its expected value
+## Step 2 - The variation (residuals) of each cell in matrix X from its expected value
 
 `$$\text{Deviation} = \mathbf{X} - \mathbf{rc}^T$$`
 
@@ -344,13 +344,15 @@ class: middle
 &lt;/tbody&gt;
 &lt;/table&gt;
 
+Big positive (negative) numbers means a strong positive (negative) relationship.
 
-
+???
+The residuals quantify the difference between the observed data and the data we would expect under the assumption that there is no relationship between the row and column categories of the table.
 
 ---
 class: middle 
 
-## Step 2 - Calculate row profile, and column profile
+## Step 3 - Calculate row profile, and column profile
 
 .pull-left[
 
@@ -360,30 +362,30 @@ class: middle
 &lt;caption&gt;Matrix R. Row Profile&lt;/caption&gt;
  &lt;thead&gt;
   &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; Others &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Home &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; School_work &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Sum &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Others &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Home &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; School_work &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Sum &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 0.10 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.67 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.22 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.1050 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6740 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.2210 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1.0000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 0.12 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.67 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.22 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.1170 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6670 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.2160 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1.0000 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 0.10 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.85 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.05 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0970 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.8510 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0523 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1.0000 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -398,35 +400,35 @@ class: middle
  &lt;thead&gt;
   &lt;tr&gt;
    &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Others &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Home &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; School &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Others &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Home &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; School &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;font-weight: bold;"&gt; Brown Bread &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.08 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.07 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0761 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0657 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.1420 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;font-weight: bold;"&gt; Fruit &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.36 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.28 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.59 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.3650 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.2780 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.5930 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;font-weight: bold;"&gt; Veg not raw &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.56 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.66 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.27 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.5590 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6560 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.2660 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;font-weight: bold;"&gt; Sum &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1.0000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1.0000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1.0000 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;

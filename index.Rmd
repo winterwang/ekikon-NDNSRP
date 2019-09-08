@@ -167,10 +167,13 @@ class: middle
 Xp <- as.matrix(freqtab) / sum(as.matrix(freqtab))
 Xpmg <- addmargins(Xp)
 Xpmg <- signif(Xpmg, digits = 3)
-row.names(Xpmg) <- c("Brown Bread", "Fruit", "Veg not raw", "c: col masses")
-colnames(Xpmg) <- c("Others", "Home", "School_work", "r: row masses")
 
-as.data.frame.matrix(Xpmg) %>%
+Xp_4 <- sprintf("%.4f", Xpmg)
+Xp_4 <- matrix(Xp_4, nrow = 4)
+row.names(Xp_4) <- c("Brown Bread", "Fruit", "Veg not raw", "c: col masses")
+colnames(Xp_4) <- c("Others", "Home", "School_work", "r: row masses")
+
+as.data.frame.matrix(Xp_4) %>%
   kable(caption = "Matrix X. Observed Cell Proportions") %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>% 
   column_spec(1, bold = T) 
@@ -190,7 +193,7 @@ c <- t(Xp)  %*% matrix(c(1, 1, 1), nrow = 3)
 
 ---
 class: middle 
-## Step 2 - The variation of each cell in matrix X from its expected value
+## Step 2 - The variation (residuals) of each cell in matrix X from its expected value
 
 $$\text{Deviation} = \mathbf{X} - \mathbf{rc}^T$$
 
@@ -208,13 +211,15 @@ as.data.frame.matrix(Dev) %>%
   column_spec(1, bold = T) 
 ```
 
+Big positive (negative) numbers means a strong positive (negative) relationship.
 
-
+???
+The residuals quantify the difference between the observed data and the data we would expect under the assumption that there is no relationship between the row and column categories of the table.
 
 ---
 class: middle 
 
-## Step 2 - Calculate row profile, and column profile
+## Step 3 - Calculate row profile, and column profile
 
 .pull-left[
 
@@ -229,7 +234,13 @@ C <- solve(Dc) %*% t(Xp)
 Rmg <- addmargins(R)[-4,]
 Rmg <- signif(Rmg, digits = 3)
 rownames(Rmg) <- NULL
-as.data.frame.matrix(Rmg) %>%
+
+Rmg_4 <- sprintf("%.4f", Rmg)
+Rmg_4 <- matrix(Rmg_4, nrow = 3)
+rownames(Rmg_4) <- rownames(Rmg)
+colnames(Rmg_4) <- colnames(Rmg)
+
+as.data.frame.matrix(Rmg_4) %>%
   kable(caption = "Matrix R. Row Profile") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
@@ -245,7 +256,16 @@ C <- solve(Dc) %*% t(Xp)
 Cmg <- addmargins(t(C))[,-4]
 Cmg <- signif(Cmg, digits = 3)
 colnames(Cmg) <- c("Others", "Home", "School")
-as.data.frame.matrix(Cmg) %>%
+
+
+
+Cmg_4 <- sprintf("%.4f", Cmg)
+Cmg_4 <- matrix(Cmg_4, nrow = 4)
+rownames(Cmg_4) <- rownames(Cmg)
+colnames(Cmg_4) <- colnames(Cmg)
+
+
+as.data.frame.matrix(Cmg_4) %>%
   kable(caption = "Matrix C. Column Profile") %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>% 
   column_spec(1, bold = T) 

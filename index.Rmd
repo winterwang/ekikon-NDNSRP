@@ -530,7 +530,7 @@ background-size: contain
 ---
 class: middle, center
 ### The full contingency table of food recordings and eating locations
-
+.small[
 ```{r echo=FALSE, tidy=FALSE, warning = FALSE, eval=TRUE}
 freqtab <- xtabs(~H_teenFood$mfgLab + H_teenFood$Locat)
 
@@ -539,6 +539,7 @@ DT::datatable(
   fillContainer = FALSE, options = list(pageLength = 4)
 )
 ```
+]
 
 ---
 class: middle

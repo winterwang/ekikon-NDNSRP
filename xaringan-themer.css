@@ -33,7 +33,7 @@ h1, h2, h3 {
 }
 .remark-slide-content {
   background-color: #E8EDED;
-  font-size: 20px;
+  font-size: 28px;
   
   
   
@@ -173,3 +173,7 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
     left: 0 !important;
   }
 }
+
+.large { font-size: 130% }
+.med { font-size: 85% }
+.small { font-size: 70% }

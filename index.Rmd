@@ -1,8 +1,10 @@
 ---
-title: "Mining the National Diet and Nutrition Survey Rolling Programme (NDNS RP) data"
+title: "Mining the National Diet and Nutrition Survey (NDNS RP) data"
 subtitle: "Where, when, what you eat."
 author: "王　超辰 | Chaochen Wang"
-date: "2019-09-17 18:00~19:30 @AMU・疫学懇話会"
+date: 
+      2019-09-17 18:00~19:30 <br>
+       @AMU・疫学懇話会
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css
@@ -16,21 +18,6 @@ output:
 ---
 
 
-```{r xaringan-themer, include = FALSE}
-library(xaringanthemer)
-mono_light(
-  base_color = "#1c5253",
-  header_font_google = google_font("Josefin Sans"),
-  # text_font_google   = google_font("M PLUS Rounded 1c", "300", "300i"),
-  text_font_google = google_font("Noto Sans JP", "300", "300i"), 
-  code_font_google   = google_font("Droid Mono"),
-  text_bold_color = "#B03A2E",
-  link_color = "#2c7fb8",
-  title_slide_background_image = "pic/",
-  inverse_text_shadow = TRUE
-)
-# write_xaringan_theme(text_bold_color = "#FF4333")
-```
 
 class: middle
 
@@ -54,12 +41,19 @@ class: middle
 ---
 class: middle
 
-# Some intuition about correspondence analysis  (CA)
+## Some intuition about correspondence analysis  (CA)
 
---
 - CA is a method for investigating the relationship in a **two-dimensional contingency table**.
 
-- For example, the following table gives the frequency of consumption of three healthy food groups at each location in the NDNS RP data among teenagers (age: 11~19 years):
+- It takes a large table, and turns it into a seemingly easy-to-read visualization.
+
+
+---
+class: middle
+
+## Analysis of contingency table
+
+- The frequency of consumption of three healthy food groups at each location in the NDNS RP data among teenagers (age: 11~19 years):
 
 ```{r eval = T, echo=FALSE, message=FALSE}
 library(knitr)
@@ -116,21 +110,13 @@ $$
 $$
 
 --
-### To look for evidence against the null hypothesis that **there is no difference across the columns or rows**.
+To look for evidence against the null hypothesis that **there is no difference across the columns or rows**.
 
 ---
 class: middle
-# Hypothesis of independence
+## Hypothesis of independence
 
-The null hypothesis of no difference across the columns or rows is also called:
-
-.pull-left[
-- Hypothesis of independence 
-]
-
-.pull-right[
-- Homogeneity assumption
-]
+The null hypothesis of no difference across the columns or rows is also called: **Hypothesis of independence, or Homogeneity assumption.**
 
 ```{r}
 chisq.test(freqtab)
@@ -161,7 +147,7 @@ as.data.frame.matrix(freqtabmg) %>%
 ---
 class: middle 
 
-## Step 1 - convert the frequency cell to proportions
+### Step 1 - convert the frequency cell to proportions
 
 ```{r echo = FALSE}
 Xp <- as.matrix(freqtab) / sum(as.matrix(freqtab))
@@ -179,6 +165,7 @@ as.data.frame.matrix(Xp_4) %>%
   column_spec(1, bold = T) 
 ```
 
+???
 - Row masses: $\mathbf{r} = \mathbf{X1}$ 
 
 ```{r}
@@ -192,12 +179,11 @@ c <- t(Xp)  %*% matrix(c(1, 1, 1), nrow = 3)
 ```
 
 
-???
 - On average (77.8%) most of the healthy foods are eaten at home
 
 ---
 class: middle 
-## Step 2 - The variation (residuals) of each cell in matrix X from its expected value
+### Step 2 - The variation (residuals) of each cell in matrix X from its expected value
 
 $$\text{Deviation} = \mathbf{X} - \mathbf{rc}^T$$
 
@@ -215,15 +201,16 @@ as.data.frame.matrix(Dev) %>%
   column_spec(1, bold = T) 
 ```
 
+???
 Big positive (negative) numbers means a strong positive (negative) relationship.
 
-???
+
 The residuals quantify the difference between the observed data and the data we would expect under the assumption that there is no relationship between the row and column categories of the table.
 
 ---
 class: middle
 
-## Step 3 - Standardise the residual for fair comparison (Z score)
+### Step 3 - Standardise the residual for fair comparison (Z score)
 
 $$
 \mathbf{Z}  = \mathbf{D}_r^{-\frac{1}{2}} \times \text{Deviation} \times \mathbf{D}_c^{-\frac{1}{2}}
@@ -255,7 +242,7 @@ These standardized residuals are z-scores.  This means that values of more than 
 ---
 class: middle
 
-## Step 4 - Single Value Decomposition
+### Step 4 - Single Value Decomposition
 
 $$
 \mathbf{Z} = \mathbf{UD}_\lambda \mathbf{V}^T
@@ -268,15 +255,16 @@ Where,
 - $\mathbf{D}_\lambda$: singular values matrix;
 - $\mathbf{V}^T$: right singular vectors of $\mathbf{Z}$<br> (principal axes of location space **for projection of food groups**).
 
---
+---
+class: middle
 
-#### Reminder in principle component analysis (PCA)  - Spectral decomposition
+### Recall that in principle component analysis (PCA)  - Spectral decomposition
 
 $$
 \mathbf{S} = \mathbf{P}\Lambda\mathbf{P}^T
 $$
 
-#### It is easy to prove that 
+### It is also easy to prove that 
 
 $$
 \mathbf{D}_\lambda^2 = \Lambda
@@ -292,6 +280,7 @@ $$
 class: middle
 ## Step 4 - Single Value Decomposition
 
+.small[
 $$
 \begin{aligned}
 \mathbf{Z}  & = \mathbf{UD}_\lambda \mathbf{V}^T \\ 
@@ -317,6 +306,7 @@ $$
 \end{matrix}\right]\\
 \end{aligned}
 $$
+]
 
 In R, simply do 
 
@@ -328,10 +318,11 @@ svd(z)
 ---
 class: middle 
 
-## Step 5 - Calculate row profile, and column profile, centre them
+### Step 5 - Calculate row profile, and column profile, centre them
 
 .pull-left[
 
+.small[
 - Percentages of location for each food was eaten:
 
 ```{r echo=FALSE}
@@ -354,15 +345,17 @@ as.data.frame.matrix(Rmg_4) %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
+
 $$
 \begin{aligned}
 \mathbf{R} & = \mathbf{D}^{-1}_r\mathbf{X} \\
 \mathbf{R} &\; - \mathbf{1c}^T
 \end{aligned}
 $$
-]
+]]
 
 .pull-right[
+.small[
 - Percentages of food was eaten at each location:
 
 ```{r echo = FALSE}
@@ -393,15 +386,15 @@ $$
 $$
 
 ]
-
+]
 
 ---
 class: middle 
 
-## Step 6 - Find principal coordinates for rows and columns
+### Step 6 - Find principal coordinates for rows and columns
 
 .pull-left[
-- Project the centred row profiles (food groups) onto to principal axes of locations $\mathbf{V}$
+.small[- Project the centred row profiles (food groups) onto to principal axes of locations $\mathbf{V}$
 $$ 
 F = (\mathbf{R} - \mathbf{1c}^T)(\mathbf{D}_c^{-1})(\mathbf{D}_c^{\frac{1}{2}}\mathbf{V})
 $$
@@ -433,10 +426,10 @@ as.data.frame.matrix(F_4) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>% 
   column_spec(1, bold = T) 
 ```
-]
+]]
 
 .pull-right[
-
+.small[
 - Project the centred column prifiles (locations) onto principal axes of food groups $\mathbf{U}$
 
 $$ 
@@ -474,7 +467,7 @@ as.data.frame.matrix(G_4) %>%
 ```
 
 
-]
+]]
 
 
 
@@ -494,11 +487,11 @@ background-size: contain
 ---
 class: middle
 
-## Let's look at the row (food group) profile again
+### Let's look at the row (food group) profile again
 
 
 .pull-left[
-
+.small[
 ```{r echo=FALSE}
 
 CA3fg <- rbind(Rmg_4, Xp_4[4, ])
@@ -507,19 +500,19 @@ as.data.frame.matrix(CA3fg[, -4]) %>%
   kable(caption = "Matrix R. Row Profile") %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>% 
   column_spec(1, bold = T) %>% 
-  row_spec(2, bold = T, color = "white", background = "#D7261E") %>% 
+  row_spec(2, bold = T, color = "white", background = "#d95f0e") %>% 
   row_spec(4, bold = T, color = "white", background = "#666666")
 ```
-]
+]]
 
 .pull-right[
 
-1. The origin point is the average profile of these points.
+.small[1. The origin point is the average profile of these points.
 2. On average, 77.8% of these healthy food were eaten at home
 3. Although 66.7% of fruit intake were recorded at home, it is lower than the average.
 4. Fruit plotted away from home. 
 5. Similarly, we see vegetable plotted closer to home.
-]
+]]
 
 ???
 - Length of the vector from the origin to any point represents the deviation (residuals from the average)
@@ -546,3 +539,13 @@ DT::datatable(
   fillContainer = FALSE, options = list(pageLength = 4)
 )
 ```
+
+---
+class: middle
+
+# Obectives
+
+- To investigate/describe the association visually between food groups and locations using Correspondence Analysis (CA). 
+
+- To investigate/describe the association visually between food groups and time slots using CA.
+- Generate and test some potential hypotheses suggested by close assocations identified by CA.

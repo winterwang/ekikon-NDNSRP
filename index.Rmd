@@ -191,6 +191,10 @@ r <- Xp %*% matrix(c(1, 1, 1), nrow = 3)
 c <- t(Xp)  %*% matrix(c(1, 1, 1), nrow = 3)
 ```
 
+
+???
+- On average (77.8%) most of the healthy foods are eaten at home
+
 ---
 class: middle 
 ## Step 2 - The variation (residuals) of each cell in matrix X from its expected value
@@ -224,6 +228,9 @@ class: middle
 $$
 \mathbf{Z}  = \mathbf{D}_r^{-\frac{1}{2}} \times \text{Deviation} \times \mathbf{D}_c^{-\frac{1}{2}}
 $$
+
+
+
 ```{r eval=TRUE, echo=FALSE}
 Deviation <- Xp - r %*% t(c)
 Dr <- diag(as.numeric(r))
@@ -262,6 +269,7 @@ Where,
 - $\mathbf{V}^T$: right singular vectors of $\mathbf{Z}$<br> (principal axes of location space **for projection of food groups**).
 
 --
+
 #### Reminder in principle component analysis (PCA)  - Spectral decomposition
 
 $$
@@ -469,113 +477,72 @@ as.data.frame.matrix(G_4) %>%
 ]
 
 
----
-class: middle 
-
-## Step 7 - standardise the coordinates
-
-
-.pull-left[
-$$
-\text{Rows} = \mathbf{FD}_\lambda^{-\frac{1}{2}} \\
-$$
-]
-
-.pull-right[
-$$
-\text{Columns} = \mathbf{G}\mathbf{D}_\lambda^{-\frac{1}{2}}
-$$
-]
-
-
-
-```{r echo = FALSE}
-
-## sqare root of matrix singular values
-d.sqrt <- solve(expm::sqrtm(diag(svd(z)$d)))
-
-Row <- F %*% d.sqrt
-Row <- Row[, -3]
-rownames(Row) <-  c("Brown Bread", "Fruit", "Veg not raw")
-# c("Others", "Home", "School_work")
-colnames(Row) <- c("Horizontal", "Vertical")
-
-Colu <- G  %*% d.sqrt
-Colu <- Colu[, -3]
-rownames(Colu) <-   c("Others", "Home", "School_work")
-colnames(Colu) <- c("Horizontal", "Vertical")
-
-Coo <- rbind(Row, Colu)
-
-Coo <- sprintf("%.4f", Coo)
-Coo <- matrix(Coo, nrow = 6)
-# G_4 <- G_4[, -3]
-rownames(Coo) <-  c("Brown Bread", "Fruit", "Veg not raw", "Others", "Home", "School_work")
-colnames(Coo) <- c("Horizontal", "Vertical")
-
-
-
-as.data.frame.matrix(Coo) %>%
-  kable(caption = "Standar Normalised Coordinates for Rows and Columns") %>%
-  kable_styling(bootstrap_options = c("striped", "hover"),  full_width = T) %>% 
-  column_spec(1, bold = T) 
-
-```
 
 ---
-class: middle 
+background-image: url("./img/CA_3fg3lc.png")
+background-position: 50% 50%
+background-size: contain
 
-```{r include=FALSE}
-source("makecaplot.R")
-library(ca)
-ca.fit <- ca(freqtab)
-ca.plot <- plot(ca.fit)
-```
+???
 
+- the vertical axis may be interpreted as moving from structured environments (home, school-work) to unstructured (Other - leisure, party, mobile, bus, etc.)
 
+- The percentage label for each axis is a measure of how much of the total variation in the data (inertia) has been captured in that axis. 
 
-```{r eval=TRUE, echo=FALSE, fig.height=8, fig.width=12, fig.align='center', warning=FALSE}
-
-ca.plot.df <- make.ca.plot.df(ca.plot,
-                              row.lab = "Food Groups",
-                              col.lab = "Location")
-ca.plot.df$Size <- ifelse(ca.plot.df$Variable == "Location", 2, 1)
-ca.sum <- summary(ca.fit)
-dim.var.percs <- ca.sum$scree[,"values2"]
-
-library(ggplot2)
-library(ggrepel)
-
-p <- ggplot(ca.plot.df, aes(x = Dim1, y = Dim2,
-                       col = Variable, shape = Variable,
-                       label = Label, size = Size)) +
-  geom_vline(xintercept = 0, lty = "dashed", alpha = .5) +
-  geom_hline(yintercept = 0, lty = "dashed", alpha = .5) +
-  geom_point() +
-  scale_x_continuous(limits = range(ca.plot.df$Dim1) + c(diff(range(ca.plot.df$Dim1)) * -0.2,
-                                                         diff(range(ca.plot.df$Dim1)) * 0.2)) +
-  scale_y_continuous(limits = range(ca.plot.df$Dim2) + c(diff(range(ca.plot.df$Dim2)) * -0.2,
-                                                         diff(range(ca.plot.df$Dim2)) * 0.2)) +
-  scale_size(range = c(4, 7)) +
-  geom_label_repel(show.legend = FALSE, segment.alpha = .5, point.padding = unit(5, "points")) +
-  labs(x = paste0("Dimension 1 (", signif(dim.var.percs[1], 3), "%)"),
-       y = paste0("Dimension 2 (", signif(dim.var.percs[2], 3), "%)"),
-       col = "", shape = "") +
-  theme_minimal() + theme(plot.caption = element_text(size = 12, 
-    face = "bold"), panel.grid.major = element_line(colour = "lightgray", 
-    size = 0.6, linetype = "dotted"), panel.grid.minor = element_line(size = 1.6, 
-    linetype = "dotted"), axis.title = element_text(size = 18), 
-    axis.text = element_text(size = 15, colour = "gray0"), 
-    plot.title = element_text(size = 21, 
-        face = "bold", hjust = 0.5, vjust = 2), 
-    panel.background = element_rect(fill = "white", 
-        size = 0), legend.position = "none") +labs(title = "Correspondence Analysis of food groups and locations", 
-    colour = NULL, shape = NULL, caption = "Coordinates in symmetric normalization")
-plot(p)
-```
-
+- So 99.8% of total variation of the contingency table is explained by the horizontal axis. 
 
 ---
 class: middle
 
+## Let's look at the row (food group) profile again
 
+
+.pull-left[
+
+```{r echo=FALSE}
+
+CA3fg <- rbind(Rmg_4, Xp_4[4, ])
+rownames(CA3fg) <- rownames(Xp_4)
+as.data.frame.matrix(CA3fg[, -4]) %>%
+  kable(caption = "Matrix R. Row Profile") %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>% 
+  column_spec(1, bold = T) %>% 
+  row_spec(2, bold = T, color = "white", background = "#D7261E") %>% 
+  row_spec(4, bold = T, color = "white", background = "#666666")
+```
+]
+
+.pull-right[
+
+1. The origin point is the average profile of these points.
+2. On average, 77.8% of these healthy food were eaten at home
+3. Although 66.7% of fruit intake were recorded at home, it is lower than the average.
+4. Fruit plotted away from home. 
+5. Similarly, we see vegetable plotted closer to home.
+]
+
+???
+- Length of the vector from the origin to any point represents the deviation (residuals from the average)
+
+
+
+
+
+---
+background-image: url("./img/CA_3fg3lc.png")
+background-position: 50% 50%
+background-size: contain
+
+
+---
+class: middle, center
+### The full contingency table of food recordings and eating locations
+
+```{r echo=FALSE, tidy=FALSE, warning = FALSE, eval=TRUE}
+freqtab <- xtabs(~H_teenFood$mfgLab + H_teenFood$Locat)
+
+DT::datatable(
+  head(as.data.frame.matrix(freqtab), 60),  escape=FALSE, 
+  fillContainer = FALSE, options = list(pageLength = 4)
+)
+```

@@ -1,0 +1,53 @@
+<!-- --- -->
+<!-- class: middle  -->
+
+<!-- ## Step 7 - standardise the coordinates -->
+
+
+<!-- .pull-left[ -->
+<!-- $$ -->
+<!-- \text{Rows} = \mathbf{FD}_\lambda^{-\frac{1}{2}} \\ -->
+<!-- $$ -->
+<!-- ] -->
+
+<!-- .pull-right[ -->
+<!-- $$ -->
+<!-- \text{Columns} = \mathbf{G}\mathbf{D}_\lambda^{-\frac{1}{2}} -->
+<!-- $$ -->
+<!-- ] -->
+
+
+
+<!-- ```{r echo = FALSE} -->
+
+<!-- ## sqare root of matrix singular values -->
+<!-- d.sqrt <- solve(expm::sqrtm(diag(svd(z)$d))) -->
+
+<!-- Row <- F %*% d.sqrt -->
+<!-- Row <- Row[, -3] -->
+<!-- rownames(Row) <-  c("Brown Bread", "Fruit", "Veg not raw") -->
+<!-- # c("Others", "Home", "School_work") -->
+<!-- colnames(Row) <- c("Horizontal", "Vertical") -->
+
+<!-- Colu <- G  %*% d.sqrt -->
+<!-- Colu <- Colu[, -3] -->
+<!-- rownames(Colu) <-   c("Others", "Home", "School_work") -->
+<!-- colnames(Colu) <- c("Horizontal", "Vertical") -->
+
+<!-- Coo <- rbind(Row, Colu) -->
+
+<!-- Coo <- sprintf("%.4f", Coo) -->
+<!-- Coo <- matrix(Coo, nrow = 6) -->
+<!-- # G_4 <- G_4[, -3] -->
+<!-- rownames(Coo) <-  c("Brown Bread", "Fruit", "Veg not raw", "Others", "Home", "School_work") -->
+<!-- colnames(Coo) <- c("Horizontal", "Vertical") -->
+
+
+
+<!-- as.data.frame.matrix(Coo) %>% -->
+<!--   kable(caption = "Standar Normalised Coordinates for Rows and Columns") %>% -->
+<!--   kable_styling(bootstrap_options = c("striped", "hover"),  full_width = T) %>%  -->
+<!--   column_spec(1, bold = T)  -->
+
+<!-- ``` -->
+

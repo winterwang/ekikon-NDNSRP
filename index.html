@@ -5,6 +5,15 @@
     <meta charset="utf-8" />
     <meta name="author" content="王　超辰 | Chaochen Wang" />
     <script src="libs/kePrint-0.0.1/kePrint.js"></script>
+    <script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+    <script src="libs/jquery-1.12.4/jquery.min.js"></script>
+    <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding-0.8/datatables.js"></script>
+    <link href="libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
@@ -295,6 +304,10 @@ r &lt;- Xp %*% matrix(c(1, 1, 1), nrow = 3)
 c &lt;- t(Xp)  %*% matrix(c(1, 1, 1), nrow = 3)
 ```
 
+
+???
+- On average (77.8%) most of the healthy foods are eaten at home
+
 ---
 class: middle 
 ## Step 2 - The variation (residuals) of each cell in matrix X from its expected value
@@ -357,6 +370,9 @@ class: middle
 $$
 \mathbf{Z}  = \mathbf{D}_r^{-\frac{1}{2}} \times \text{Deviation} \times \mathbf{D}_c^{-\frac{1}{2}}
 $$
+
+
+
 &lt;table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;"&gt;
 &lt;caption&gt;Standardised Residuals Table&lt;/caption&gt;
  &lt;thead&gt;
@@ -411,6 +427,7 @@ Where,
 - `\(\mathbf{V}^T\)`: right singular vectors of `\(\mathbf{Z}\)`&lt;br&gt; (principal axes of location space **for projection of food groups**).
 
 --
+
 #### Reminder in principle component analysis (PCA)  - Spectral decomposition
 
 $$
@@ -646,81 +663,95 @@ $$
 ]
 
 
----
-class: middle 
 
-## Step 7 - standardise the coordinates
+---
+background-image: url("./img/CA_3fg3lc.png")
+background-position: 50% 50%
+background-size: contain
+
+???
+
+- the vertical axis may be interpreted as moving from structured environments (home, school-work) to unstructured (Other - leisure, party, mobile, bus, etc.)
+
+- The percentage label for each axis is a measure of how much of the total variation in the data (inertia) has been captured in that axis. 
+
+- So 99.8% of total variation of the contingency table is explained by the horizontal axis. 
+
+---
+class: middle
+
+## Let's look at the row (food group) profile again
 
 
 .pull-left[
-$$
-\text{Rows} = \mathbf{FD}_\lambda^{-\frac{1}{2}} \\
-$$
-]
-
-.pull-right[
-$$
-\text{Columns} = \mathbf{G}\mathbf{D}_\lambda^{-\frac{1}{2}}
-$$
-]
-
-
 
 &lt;table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;"&gt;
-&lt;caption&gt;Standar Normalised Coordinates for Rows and Columns&lt;/caption&gt;
+&lt;caption&gt;Matrix R. Row Profile&lt;/caption&gt;
  &lt;thead&gt;
   &lt;tr&gt;
    &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Horizontal &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Vertical &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Others &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Home &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; School_work &lt;/th&gt;
   &lt;/tr&gt;
  &lt;/thead&gt;
 &lt;tbody&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;font-weight: bold;"&gt; Brown Bread &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; -0.6320 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.3325 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.1050 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.6740 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.2210 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;font-weight: bold;"&gt; Fruit &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; -0.6180 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; -0.0788 &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #D7261E !important;"&gt; Fruit &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #D7261E !important;"&gt; 0.1170 &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #D7261E !important;"&gt; 0.6670 &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #D7261E !important;"&gt; 0.2160 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;font-weight: bold;"&gt; Veg not raw &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.4138 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.0006 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0970 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.8510 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 0.0523 &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;font-weight: bold;"&gt; Others &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; -0.1634 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; -0.2973 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;font-weight: bold;"&gt; Home &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.2263 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.0299 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;font-weight: bold;"&gt; School_work &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; -1.3471 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; 0.0649 &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;font-weight: bold;color: white !important;background-color: #666666 !important;"&gt; c: col masses &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #666666 !important;"&gt; 0.1040 &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #666666 !important;"&gt; 0.7780 &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #666666 !important;"&gt; 0.1180 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
+]
+
+.pull-right[
+
+1. The origin point is the average profile of these points.
+2. On average, 77.8% of these healthy food were eaten at home
+3. Although 66.7% of fruit intake were recorded at home, it is lower than the average.
+4. Fruit plotted away from home. 
+5. Similarly, we see vegetable plotted closer to home.
+]
+
+???
+- Length of the vector from the origin to any point represents the deviation (residuals from the average)
+
+
+
+
 
 ---
-class: middle 
-
-
-
-
-
-&lt;img src="index_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
+background-image: url("./img/CA_3fg3lc.png")
+background-position: 50% 50%
+background-size: contain
 
 
 ---
-class: middle
+class: middle, center
+### The full contingency table of food recordings and eating locations
+
+<div id="htmlwidget-1ebf2ed020165517e5ed" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1ebf2ed020165517e5ed">{"x":{"filter":"none","fillContainer":false,"data":[["1% milk","2% milk","Artificial Sweeteners","Bacon and ham","Beef","Beer lager","Biscuits","Brown Bread","Burgers/kebabs","Butter","Cakes & Pastries","Cheese","Chicken/turkey","Chips","Chocolate","Coated Chicken","Commercial toddlers foods","Crisps","Diet soft drinks","Dietary supplements","Eggs","Fruit","Fruit juice","HiFi cereals","Ice cream","JamsSpreads","Lamb","Liver","LoFi cereals","LowFat Spreads","Margarine","Meat pastries","Misc./Vending","Nuts and seeds","Oily fish","Oth Bread","Other meat","Other Milk Cream","Other white fish","Pasta & Rice","Polyunsatu margarine","Pork","Potatos other","Puddings","Reg soft drinks","Salad and raw veg","Sausages","Skimmed Milk","Smoothies","Spirits and liqueurs","Spreads less-fat","Sugar confectionery","Tea/Coffee/Water","Veg not raw","White Bread","White fish, shellfish","Whole Milk","Wine","WMeal Bread","Yogurt"],[0,183,4,81,59,91,105,17,27,64,88,73,95,139,105,46,0,114,265,9,57,101,56,27,35,160,13,2,35,15,45,23,278,8,3,2,10,29,14,222,13,24,65,23,333,120,59,12,2,22,81,41,382,307,179,12,48,21,19,27],[101,4318,119,953,691,92,1407,613,162,940,853,1213,1321,1290,1077,430,5,1211,3936,495,784,2595,1450,1099,362,2956,179,20,1365,352,1107,243,5905,326,143,49,121,442,343,3325,487,255,1234,266,2659,2556,561,259,55,24,1522,387,7798,6122,2718,201,1267,86,491,745],[1,41,0,117,39,108,96,29,108,47,113,139,148,363,120,155,0,98,248,2,48,79,97,3,84,90,6,1,6,5,41,34,420,25,11,4,26,112,40,198,13,30,36,28,673,339,80,1,4,77,59,102,466,258,260,21,14,24,11,17],[2,19,3,42,0,5,95,21,24,17,46,29,43,79,117,35,0,130,76,7,12,119,13,0,21,39,1,0,4,3,7,27,113,8,6,3,10,23,9,35,3,4,6,1,196,91,14,0,3,0,40,100,173,37,103,4,5,0,16,7],[1,49,0,61,14,46,127,28,23,34,68,67,56,105,147,24,0,157,170,21,15,156,44,7,41,73,4,1,9,10,32,35,210,17,5,3,10,28,16,86,7,6,11,4,296,112,27,4,3,16,36,99,407,96,145,4,20,5,14,28],[4,87,1,473,59,0,710,176,31,152,332,451,383,184,331,67,0,667,453,10,47,776,262,8,21,177,6,1,12,93,58,86,677,61,9,18,36,81,109,441,17,28,93,80,567,531,93,0,7,0,478,170,1462,333,989,37,11,2,158,192],[0,71,2,54,7,2,57,25,8,19,27,39,41,33,32,12,0,59,80,3,14,63,18,1,5,79,1,0,1,11,7,11,92,5,1,1,9,7,19,29,5,1,7,6,103,76,13,1,2,0,52,12,318,43,111,3,21,1,17,16]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Friend<\/th>\n      <th>Home<\/th>\n      <th>Leis<\/th>\n      <th>Move<\/th>\n      <th>Other<\/th>\n      <th>School<\/th>\n      <th>Work<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":4,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[4,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

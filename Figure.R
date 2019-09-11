@@ -61,8 +61,9 @@ p <- ggplot(ca.plot.df, aes(x = Dim1, y = Dim2,
         plot.title = element_text(size = 30,  face = "bold", hjust = 0.5, vjust = 2), 
                           panel.background = element_rect(fill = "white", 
                                                           size = 0), legend.position = "none") +
-  labs(title = "Correspondence Analysis of food groups and locations", 
+  labs(title = "Correspondence Analysis of food groups and Time", 
        colour = NULL, shape = NULL) +
+  scale_color_manual(values = c("#e41a1c", "#377eb8")) + 
        # , caption = "Coordinates in symmetric") + 
   theme(plot.caption = element_text(hjust = 0))
 plot(p)
@@ -75,6 +76,8 @@ G1Foods <- as.data.frame.matrix(freqtab)[rownames(as.data.frame.matrix(freqtab))
 G2Foods <- as.data.frame.matrix(freqtab)[rownames(as.data.frame.matrix(freqtab)) %in% TableFoogGroup$mfgLab[TableFoogGroup$HealthPoints3g == 2],]
 G3Foods <- as.data.frame.matrix(freqtab)[rownames(as.data.frame.matrix(freqtab)) %in% TableFoogGroup$mfgLab[TableFoogGroup$HealthPoints3g == 3],]
 
+library(FactoMineR)
+library(factoextra)
 G1.ca <- CA(G1Foods, graph = FALSE)
 fviz_ca_biplot(G1.ca, 
                repel = TRUE, title = "Biplot of Correspondence analysis for food group 1 (1st 20 healthy foods).") 

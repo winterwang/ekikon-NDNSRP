@@ -1046,6 +1046,7 @@ DT::datatable(
 ```
 ]
 
-
 ---
-class: 
+background-image: url("./img/F60T7.png")
+background-position: 50% 50%
+background-size: contain

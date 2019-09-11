@@ -618,16 +618,6 @@ class: middle
 
 - Unbiased estiamtes (even when the correlation structure is mis-specified)
 
----
-class: middle
-# Location definition
-
-```{r echo=FALSE, message=FALSE}
-dt <- read.csv("tab/locations.csv", header = TRUE)
-dt %>%
-  kable() %>%
-  kable_styling(bootstrap_options = c("striped", "hover")) 
-```
 
 ---
 class: middle
@@ -651,8 +641,266 @@ LocFr <- Food1_9_teen %>%
 
 DT::datatable(
   head(LocFr, 36),  escape=FALSE, 
+  fillContainer = FALSE, options = list(pageLength = 5)
+)
+```
+]
+
+---
+class:  left
+
+## The healthiness of food groups
+
+- Healthiness scoring system is based on a system from Rayner et al. 2013.
+
+- Categorisation of this point is controversial, roughly, the lower the point, the healthier it is considered.
+
+- Later we use tertiles to separte the foods into three groups.
+
+
+<br>
+.footnote[
+<html><head></head><body><div class="csl-entry">
+    <div class="csl-left-margin"><div class="csl-right-inline">M. Rayner, P. Scarborough, and A. Kaur, “Nutrient profiling and the regulation of marketing to children. Possibilities and pitfalls,” <i>Appetite</i>, vol. 62, pp. 232–235, 2013.</div>
+  </div>
+</body></html>
+]
+
+---
+class:
+### Food groups and contribution to calories
+
+.small[
+```{r echo=FALSE, message=FALSE, eval=TRUE}
+TableFoogGroup_print <- Food1_9_teen %>% 
+  ungroup() %>% 
+  group_by(mfgLab) %>% 
+  summarise(n = n(), meanHpoint = mean(H_points, na.rm = T), mfgCalories = sum(Energykcal)) %>% 
+  arrange(-mfgCalories) %>% 
+  mutate(n.freq = paste0(round(100 * n/sum(n), 2), "%"))  %>% 
+  mutate(cal.Prop = paste0(round(100 * mfgCalories/sum(mfgCalories), 2), "%"))  %>% 
+  mutate(calprop = mfgCalories/sum(mfgCalories)) %>% 
+  mutate(calcumprop = paste0(round(100 * cumsum(calprop), 3), "%")) %>% 
+  mutate(Hpoint = round(meanHpoint, 2)) %>% 
+  mutate(healthy     = meanHpoint < -2, 
+         lesshealthy = meanHpoint > 4, 
+         neutral     = (meanHpoint <= 4) & (meanHpoint >= -2)) %>% 
+  select(mfgLab, n, Hpoint, n.freq, cal.Prop, calcumprop)
+
+
+DT::datatable(
+  head(TableFoogGroup_print, 60),  escape=FALSE, 
+  fillContainer = FALSE, options = list(pageLength = 6)
+)
+```
+]
+
+---
+class: middle, center
+### The full contingency table of food recordings and eating locations
+.small[
+```{r echo=FALSE, tidy=FALSE, warning = FALSE, eval=TRUE}
+freqtab <- xtabs(~H_teenFood$mfgLab + H_teenFood$Locat)
+
+DT::datatable(
+  head(as.data.frame.matrix(freqtab), 60),  escape=FALSE, 
   fillContainer = FALSE, options = list(pageLength = 4)
 )
 ```
 ]
 
+
+
+---
+background-image: url("./img/CA60fg7lc_not.png")
+background-position: 50% 50%
+background-size: contain
+
+
+---
+background-image: url("./img/CA60fg7lc_big.png")
+background-position: 50% 50%
+background-size: contain
+
+???
+- This plot figure captured 88.8% total variation of the contingency table.
+
+- Horizontally, Home contrasts with all the others; 
+
+- Vertically, school and work locations are different from the other locations; 
+
+- School/home are hugly different from Leisure locations (clubs and cafe); home and move are also far away from similar.
+
+
+---
+class: inverse, center, middle
+
+# Stratified CA biplots
+
+
+
+
+---
+background-image: url("./img/F1st20_loc.png")
+background-position: 50% 50%
+background-size: contain
+
+???
+
+- 90% of total variation were explained in this figure 
+
+- Chicken, fish, brown bread, fruit, white meal bread are more likely to be consumed at school and work
+
+- Pasta, rice, milk, are more likely to be consumed at home.
+
+- Beer, Wine, Chips are associated when the teenagers are with friends, leisure locations.
+
+---
+background-image: url("./img/F2nd20_loc.png")
+background-position: 50% 50%
+background-size: contain
+
+???
+
+- Regular sweet soft drinks are closely associated with Friends, on the move. 
+
+- Spirits and liqueurs are far awary from the other food here and closer to leisure locations. 
+
+---
+background-image: url("./img/F3rd20_loc.png")
+background-position: 50% 50%
+background-size: contain
+
+???
+
+- Cheese, crisps, biscuits are associated with school and work.
+
+- Sugar, candy, are associated when teenagers are on the move.
+
+- Meat pastries and chocolate are shown together and associated with Friends.
+
+
+---
+class: 
+## To simplify testing Location definition collapsed:
+
+.pull-left[
+.small[
+```{r echo=FALSE, message=FALSE}
+dt <- read.csv("tab/locations.csv", header = TRUE)
+names(dt) <- c("Location", "Location")
+dt %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) 
+```
+]
+]
+
+
+.pull-right[
+.small[
+- Leisure, on the move, Friends, and others are usually close to each other and on the same quadrant (象限)
+
+- Same with school and work. 
+
+- So the interest become to look for those food that was associated with locations away from home/school
+]]
+
+---
+class: middle
+
+## Hypotheses:
+
+
+1. Chocoloate and meat pastries apear to be highly associated in their location being consumed.
+
+2. Sweetened soft drinks, chips, fruit, chocolate, and meat pastries were more likely to be consumed when a teenager is away from home, or away from school.
+
+
+---
+class: middle
+## Correlation between chocolate and meat pastries
+
+- The correlation between two profile vectors, $\mathbf{f1, f2}$
+
+- can be proved to be equivalent to the cosine of the angle between the vectors: $$\cos\theta = \frac{\mathbf{f1  f2}}{|f1||f2|}$$
+
+- We applied bootstrapping approach (10000 subsamples with replacement) and run CA on each sample, and calculate $\cos\theta$ for each sample
+
+---
+class: middle, center
+### Bootstrap distribution of the correlation for chocolate and meat pastries
+![Bootstrap](img/Screen Shot 2019-09-11 at 19.19.45.png)
+
+
+---
+class: middle
+
+## Location profile for chocolate and meat pastries
+
+.small[
+```{r echo=FALSE, message=FALSE}
+dt <- read.csv("tab/chol_meatpie.csv", header = TRUE)
+names(dt)[c(1, 9)] <- c(" ")
+names(dt)[9] <- "Total"
+dt[2, 9] <- " "
+dt[c(4,5), 9] <- " "
+dt %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))  %>% 
+  column_spec(1, bold = T)
+```
+]
+
+
+---
+class:middle
+
+### Soft-drinks, chips, chocolate, meat pastries and fruit at locations away from home/school
+
+
+.small[
+```{r echo=FALSE, message=FALSE}
+dt <- read.csv("tab/OR.csv", header = TRUE)
+names(dt) <- c("H0", "OR vs Home", "99% CI", "OR vs School-work", "99% CI")
+# names(dt)[9] <- "Total"
+# dt[2, 9] <- " "
+# dt[c(4,5), 9] <- " "
+dt %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))  %>% 
+  column_spec(1, bold = T)
+```
+]
+
+
+---
+class:
+
+# Conclusion
+
+- Sweetened soft drinks, chips, and chocolatesare more likely to be consumed when a teenager finds himself/herself at locations other than Home or School.
+
+- Meat pastries are more likely to be consumed outside of Home (because school and other locations are equally likely)
+
+- Odds of eating fruit at other locations are significantly lower than at home, and at school.
+
+---
+class: middle
+
+## Correlation between chocolate and meat pastries
+
+- Chocolate and meat pastries have location profiles which are strongly correlated.
+
+- Both conveient foods to carry and eat.
+
+- Both available at low prices (<£2).
+
+---
+class: middle
+
+## Why These are important?
+
+- Large portions of food consumed at other locations is sold, rather than cooked meals at home or school. 
+
+- Policymakers may need to legislate and regulate about what is sold, how the price should be, how they should be packaged and promoted for teenagers.

@@ -51,7 +51,7 @@ class: middle
 ---
 class: middle
 
-## Analysis of contingency table
+## Analysis of a contingency table
 
 - The frequency of consumption of three healthy food groups at each location in the NDNS RP data among teenagers (age: 11~19 years):
 
@@ -183,7 +183,7 @@ c <- t(Xp)  %*% matrix(c(1, 1, 1), nrow = 3)
 
 ---
 class: middle 
-### Step 2 - The variation (residuals) of each cell in matrix X from its expected value
+### Step 2 - The deviation (residuals) of each cell in matrix X from its expected value
 
 $$\text{Deviation} = \mathbf{X} - \mathbf{rc}^T$$
 
@@ -278,7 +278,7 @@ $$
 
 ---
 class: middle
-## Step 4 - Single Value Decomposition
+### Step 4 - Single Value Decomposition
 
 .small[
 $$
@@ -549,4 +549,110 @@ class: middle
 - To investigate/describe the association visually between food groups and locations using Correspondence Analysis (CA). 
 
 - To investigate/describe the association visually between food groups and time slots using CA.
-- Generate and test some potential hypotheses suggested by close assocations identified by CA.
+- Generate and test some potential hypotheses suggested by close assocations identified using CA.
+
+
+---
+class: middle
+
+# Methods and strategy 
+
+1. Randomly select 50% of the food recordings;
+
+1. Visualize the association structure between locations and food groups; 
+
+2. Generating hypotheses concerning these associations for further sampling and testing them use the other half of the data;
+
+3. Use Bonferroni method to adjust for *p* values.
+
+
+---
+class: middle 
+
+# Data from the NDNS RP
+
+- NDNS RP (started from 2008): 
+    - On-going cross-sectional study
+    - representative of UK popluation <br>- about 1000/year
+    - 4 consecutive days food diary
+    
+- 2821 teenagers <br> (1396 boys, 1425 girls, age between 11-18 inclusive)
+
+- 208037 food recordings collected.
+
+
+
+---
+background-image: url("./img/Diary1.png")
+background-position: 50% 50%
+background-size: contain
+
+---
+background-image: url("./img/Diary2.png")
+background-position: 50% 50%
+background-size: contain
+
+---
+background-image: url("./img/Diary03.png")
+background-position: 50% 50%
+background-size: contain
+
+
+---
+class: middle 
+
+# Hierarchies in the data 
+
+1. Food recordings are nested within individuals; 
+    - Within person correlation
+2. Individuals are nested within 12 survey regions; 
+    - The complex survey design
+
+## Solution:
+- Mixed (random) effect logistic regression models using generalised estimating equation (GEE).
+    - Covariates included: <br>Sex, age, socio-economic class
+    
+
+???
+- GEE can estimate the Odds ratio which can be interpreted as population average effect. 
+
+- Unbiased estiamtes (even when the correlation structure is mis-specified)
+
+---
+class: middle
+# Location definition
+
+```{r echo=FALSE, message=FALSE}
+dt <- read.csv("tab/locations.csv", header = TRUE)
+dt %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) 
+```
+
+---
+class: middle
+
+### Frequencies and proportions of food recordings by eating locations
+
+.small[
+```{r echo=FALSE}
+
+load("../CA-NDNSRP/Food1_9_teen_Hpoints.Rdata")
+
+LocFr <- Food1_9_teen %>% 
+  ungroup() %>% 
+  group_by(Where) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n) %>% 
+  mutate(rel.freq = paste0(round(100 * n/sum(n), 3), "%"))  %>% 
+  mutate(relfreq = n/sum(n)) %>% 
+  mutate(cumprop = paste0(round(100 * cumsum(relfreq), 3), "%")) %>% 
+  select(-relfreq)
+
+DT::datatable(
+  head(LocFr, 36),  escape=FALSE, 
+  fillContainer = FALSE, options = list(pageLength = 4)
+)
+```
+]
+

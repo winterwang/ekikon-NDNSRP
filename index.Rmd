@@ -904,3 +904,148 @@ class: middle
 - Large portions of food consumed at other locations is sold, rather than cooked meals at home or school. 
 
 - Policymakers may need to legislate and regulate about what is sold, how the price should be, how they should be packaged and promoted for teenagers.
+
+
+---
+class: middle, center, inverse
+
+# Food group consumption and time slots
+
+---
+class: middle
+
+## Objectives
+
+- To investigate and describe the relationshipt between **food** eaten by British adults, **time slots** and **diabetes status**.
+
+
+---
+background-image: url("./img/Diary1.png")
+background-position: 50% 50%
+background-size: contain
+
+---
+background-image: url("./img/Diary2.png")
+background-position: 50% 50%
+background-size: contain
+
+---
+background-image: url("./img/Diary03.png")
+background-position: 50% 50%
+background-size: contain
+
+
+---
+class: middle 
+
+## Methods and strategies
+
+- Correspodence analysis (CA)
+    - Biplots stratified by diabetes status
+
+- Mixed effect logistic regression using generalized estimating equation (GEE). 
+
+- Generate hypotheses from half of the food recordings, and test using the other half.
+
+- Time slots defined:  6-9 am, 9-12 noon, 12-2 pm, 2-5 pm, 5-8 pm, 8-10 pm and 10 pm-6 am.
+
+---
+class: middle 
+
+## Definition of diabetes
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+dt <- read.csv("tab/DMstatus.csv", header = TRUE)
+names(dt) <- c("Diabetes Status", "Self-reported", "Glucose (mmol/L)", "HbA1c (%)")
+# names(dt)[9] <- "Total"
+# dt[2, 9] <- " "
+# dt[c(4,5), 9] <- " "
+dt %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))  %>% 
+  column_spec(1, bold = T)
+```
+
+
+---
+class: middle 
+
+## Summary statistics 
+
+6802 adults (age >= 19 years), 2810 men and 3992 women from NDNS RP data (2008-2018). 749,026 recordings of food group entries.
+
+.small[
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+load("../CA-NDNSRP/Food1_9_adlt_labl.Rdata")
+
+timeN <- Food1_9_adlt %>% 
+  ungroup() %>% 
+  group_by(MealTimeSlot) %>% 
+  summarise(n = n()) %>% 
+  mutate(relfreq = n/sum(n)) %>% 
+  mutate(rel.freq = paste0(round(100 * n/sum(n), 3), "%"))  %>% 
+  mutate(cum.freq = paste0(round(100 * cumsum(relfreq), 3), "%")) %>% 
+  select(-relfreq)
+
+timeN %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))  %>% 
+  column_spec(1, bold = T)
+```
+]
+
+
+---
+class: middle
+### Food groups and contribution to calories
+
+
+.small[
+```{r echo=FALSE, message=FALSE, eval=TRUE}
+TableFoogGroup_adt <- Food1_9_adlt %>% 
+  ungroup() %>% 
+  group_by(mfgLab) %>% 
+  summarise(n = n(), meanHpoint = mean(H_points, na.rm = T), mfgCalories = sum(Energykcal)) %>% 
+  arrange(-mfgCalories) %>% 
+  mutate(n.freq = paste0(round(100 * n/sum(n), 2), "%"))  %>% 
+  mutate(cal.Prop = paste0(round(100 * mfgCalories/sum(mfgCalories), 2), "%"))  %>% 
+  mutate(calprop = mfgCalories/sum(mfgCalories)) %>% 
+  mutate(calcumprop = paste0(round(100 * cumsum(calprop), 3), "%")) %>% 
+  mutate(Hpoint = round(meanHpoint, 2)) %>% 
+  mutate(healthy     = meanHpoint < -2, 
+         lesshealthy = meanHpoint > 4, 
+         neutral     = (meanHpoint <= 4) & (meanHpoint >= -2)) %>% 
+  select(mfgLab, n, Hpoint, n.freq, cal.Prop, calcumprop)
+
+DT::datatable(
+  head(TableFoogGroup_adt, 60),  escape=FALSE, 
+  fillContainer = FALSE, options = list(pageLength = 6)
+)
+```
+]
+
+
+---
+class: middle, center
+### The full contingency table of food recordings and time slots
+
+.tiny[
+```{r echo=FALSE, tidy=FALSE, warning = FALSE, eval=TRUE}
+load("../CA-NDNSRP/HFood.Rdata")
+freqtab <- xtabs(~HFood$mfgLab + HFood$MealTimeSlot)
+# as.data.frame.matrix(freqtab) %>%
+#   kable() %>%
+#   kable_styling(bootstrap_options = c("striped", "hover"))
+
+# freqtab <- xtabs(~H_teenFood$mfgLab + H_teenFood$Locat)
+
+DT::datatable(
+  head(as.data.frame.matrix(freqtab), 60),  escape=FALSE, 
+  fillContainer = FALSE, options = list(pageLength = 5)
+)
+```
+]
+
+
+---
+class: 

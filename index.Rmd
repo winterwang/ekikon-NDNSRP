@@ -655,7 +655,7 @@ class:  left
 
 - Categorisation of this point is controversial, roughly, the lower the point, the healthier it is considered.
 
-- Later we use tertiles to separte the foods into three groups.
+- Later we use tertiles to separate the foods into three groups.
 
 
 <br>
@@ -879,7 +879,7 @@ class:
 
 # Conclusion
 
-- Sweetened soft drinks, chips, and chocolatesare more likely to be consumed when a teenager finds himself/herself at locations other than Home or School.
+- Sweetened soft drinks, chips, and chocolates are more likely to be consumed when a teenager finds himself/herself at locations other than Home or School.
 
 - Meat pastries are more likely to be consumed outside of Home (because school and other locations are equally likely)
 
@@ -901,7 +901,7 @@ class: middle
 
 ## Why These are important?
 
-- Large portions of food consumed at other locations is sold, rather than cooked meals at home or school. 
+- Large proportion of food consumed at other locations is packaged and sold, rather than cooked meals at home or school. 
 
 - Policymakers may need to legislate and regulate about what is sold, how the price should be, how they should be packaged and promoted for teenagers.
 
@@ -1046,16 +1046,36 @@ DT::datatable(
 ```
 ]
 
+
+
+
+---
+class: middle, center, inverse
+
+# CA biplots in total sample
+
 ---
 background-image: url("./img/F60T7.png")
 background-position: 50% 50%
 background-size: contain
+
+???
+
+- It seems that later time in the day (8 pm- 10pm-) are shown on the upper side of the plot. 
+
+- Morning time people are having breakfast foods (cereals/milk)
+
+- Chocolate, Bear, Spirits, sugar candy, sweetened soft drinks are clouded around later times. 
 
 
 ---
 background-image: url("./img/F201T7.png")
 background-position: 50% 50%
 background-size: contain
+
+???
+
+- it is clearer that late time slots (8pm - 10pm, 10pm - 6am) are different from the earlier hours in stratified figures by food groups (for better visualisation)
 
 
 
@@ -1084,12 +1104,19 @@ background-image: url("./img/F60T7_nonDM.png")
 background-position: 50% 50%
 background-size: contain
 
+???
+
+- IN non-diabetes, sugar, beer, wine, crisps, sweetened soft drink, biscuits are more associated with night period time slots. 
+
 
 ---
 background-image: url("./img/F60T7_DM.png")
 background-position: 50% 50%
 background-size: contain
 
+???
+
+- For Diagnosed DM patients (self-reported), beer, spirits, chocolate, biscuits, regular sweetened soft drinks are apear close to time after 8 pm. 
 
 
 ---
@@ -1097,7 +1124,9 @@ background-image: url("./img/F60T7_undiaDM.png")
 background-position: 50% 50%
 background-size: contain
 
+???
 
+- Among undiagnosed DM patients, sugar, chocolate, Beer, regular soft drinks, wine, Puddings seems to apear to shown in later time slots. 
 
 
 ---

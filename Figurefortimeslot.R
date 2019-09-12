@@ -327,10 +327,10 @@ p <- ggplot(ca.plot.df, aes(x = Dim1, y = Dim2,
         panel.background = element_rect(fill = "white", 
                                         size = 0), legend.position = "none") +
   scale_color_manual(values = c("#e41a1c", "#377eb8")) + 
-  labs(title = "Correspondence Analysis of food groups and Time Slots\n among Pre-diabetes participants.",
-       colour = NULL, shape = NULL) +
+  # labs(title = "Correspondence Analysis of food groups and Time Slots\n among Pre-diabetes participants.",
+       # colour = NULL, shape = NULL) +
   # , caption = "Coordinates in symmetric") +
-  theme(plot.caption = element_text(hjust = 0)) #+ 
+  theme(plot.caption = element_text(hjust = 0)) # + 
 # scale_x_reverse() + 
    # scale_y_reverse()
 plot(p)

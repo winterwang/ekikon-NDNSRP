@@ -135,7 +135,9 @@ p <- ggplot(ca.plot.df, aes(x = Dim1, y = Dim2,
        colour = NULL, shape = NULL) +
   scale_color_manual(values = c("#e41a1c", "#377eb8")) + 
   # , caption = "Coordinates in symmetric") + 
-  theme(plot.caption = element_text(hjust = 0))
+  theme(plot.caption = element_text(hjust = 0)) + 
+  scale_y_reverse()
+  
 plot(p)
 
 
@@ -183,7 +185,152 @@ p <- ggplot(ca.plot.df, aes(x = Dim1, y = Dim2,
        colour = NULL, shape = NULL) +
   scale_color_manual(values = c("#e41a1c", "#377eb8")) + 
   # , caption = "Coordinates in symmetric") + 
-  theme(plot.caption = element_text(hjust = 0))
+  theme(plot.caption = element_text(hjust = 0)) + 
+  scale_x_reverse() #+ 
+  # scale_y_reverse()
+plot(p)
+
+# G3 foods ----------------------------------------------------------------
+
+ca.fit <- ca(G3Foods)
+ca.plot <- plot(ca.fit)
+
+
+ca.plot.df <- make.ca.plot.df(ca.plot,
+                              row.lab = "Food Groups",
+                              col.lab = "Location")
+ca.plot.df$Size <- ifelse(ca.plot.df$Variable == "Location", 2, 1)
+ca.sum <- summary(ca.fit)
+dim.var.percs <- ca.sum$scree[,"values2"]
+
+p <- ggplot(ca.plot.df, aes(x = Dim1, y = Dim2,
+                            col = Variable, shape = Variable,
+                            label = Label, size = Size)) +
+  geom_vline(xintercept = 0, lty = "dashed", alpha = .5) +
+  geom_hline(yintercept = 0, lty = "dashed", alpha = .5) +
+  geom_point() +
+  scale_x_continuous(limits = range(ca.plot.df$Dim1) + c(diff(range(ca.plot.df$Dim1)) * -0.2,
+                                                         diff(range(ca.plot.df$Dim1)) * 0.2)) +
+  scale_y_continuous(limits = range(ca.plot.df$Dim2) + c(diff(range(ca.plot.df$Dim2)) * -0.2,
+                                                         diff(range(ca.plot.df$Dim2)) * 0.2)) +
+  scale_size(range = c(4, 7)) +
+  geom_label_repel(show.legend = FALSE, segment.alpha = .5, point.padding = unit(5, "points")) +
+  labs(x = paste0("Dimension 1 (", signif(dim.var.percs[1], 3), "%)"),
+       y = paste0("Dimension 2 (", signif(dim.var.percs[2], 3), "%)"),
+       col = "", shape = "") +
+  theme_minimal() + 
+  theme(plot.caption = element_text(size = 23,
+                                    face = "bold"), 
+        panel.grid.major = element_line(colour = "lightgray",  size = 0.6, linetype = "dotted"), 
+        panel.grid.minor = element_line(size = 1.6, linetype = "dotted"), 
+        axis.title = element_text(size = 24), 
+        axis.text = element_text(size = 24, colour = "gray0"), 
+        plot.title = element_text(size = 27,  face = "bold", hjust = 0.5, vjust = 2), 
+        panel.background = element_rect(fill = "white", 
+                                        size = 0), legend.position = "none") +
+  labs(title = "Correspondence Analysis of 3rd 20 food groups and Time slots",
+       colour = NULL, shape = NULL) +
+  scale_color_manual(values = c("#e41a1c", "#377eb8")) + 
+  # , caption = "Coordinates in symmetric") + 
+  theme(plot.caption = element_text(hjust = 0))+ 
+  scale_x_reverse() #+ 
+# scale_y_reverse()
 plot(p)
 
 
+
+
+# stratified by DM status -------------------------------------------------
+load("../CA-NDNSRP/HFood.Rdata")
+
+## diagnosed DM ---------------
+DiagDM <- as.logical(HFood$DM4cat.y == 3)
+DiagDMtab <- xtabs(~HFood$mfgLab + HFood$MealTimeSlot, subset = DiagDM)
+DiagDMmatrix <- matrix(data = DiagDMtab, nrow = 59, ncol = 7, 
+                       dimnames = list(rownames(DiagDMtab), colnames(DiagDMtab)))
+
+DiagDM.ca <- CA(DiagDMmatrix, graph = FALSE)
+fviz_ca_biplot(DiagDM.ca, 
+               repel = TRUE, title = "Biplot of Correspondence analysis among diagnosed DM.") 
+
+## non-diabetes -----------
+
+DiagDM <- as.logical(HFood$DM4cat.y == 0)
+DiagDMtab <- xtabs(~HFood$mfgLab + HFood$MealTimeSlot, subset = DiagDM)
+DiagDMmatrix <- matrix(data = DiagDMtab, nrow = 60, ncol = 7, 
+                       dimnames = list(rownames(DiagDMtab), colnames(DiagDMtab)))
+
+DiagDM.ca <- CA(DiagDMmatrix, graph = FALSE)
+fviz_ca_biplot(DiagDM.ca, 
+               repel = TRUE, title = "Biplot of Correspondence analysis among non-diabetes participants.") 
+
+
+## undiagnosed DM ---------------
+
+
+DiagDM <- as.logical(HFood$DM4cat.y == 2)
+DiagDMtab <- xtabs(~HFood$mfgLab + HFood$MealTimeSlot, subset = DiagDM)
+DiagDMmatrix <- matrix(data = DiagDMtab, nrow = 59, ncol = 7, 
+                       dimnames = list(rownames(DiagDMtab), colnames(DiagDMtab)))
+
+DiagDM.ca <- CA(DiagDMmatrix, graph = FALSE)
+fviz_ca_biplot(DiagDM.ca, 
+               repel = TRUE, title = "Biplot of Correspondence analysis among undiagnosed DM participants.") 
+
+## Prediabetes --------
+
+DiagDM <- as.logical(HFood$DM4cat.y == 1)
+DiagDMtab <- xtabs(~HFood$mfgLab + HFood$MealTimeSlot, subset = DiagDM)
+DiagDMmatrix <- matrix(data = DiagDMtab, nrow = 59, ncol = 7, 
+                       dimnames = list(rownames(DiagDMtab), colnames(DiagDMtab)))
+
+DiagDM.ca <- CA(DiagDMmatrix, graph = FALSE)
+fviz_ca_biplot(DiagDM.ca, 
+               repel = TRUE, title = "Biplot of Correspondence analysis among Prediabetes participants.") 
+
+
+
+ca.fit <- ca(DiagDMmatrix)
+ca.plot <- plot(ca.fit)
+
+
+ca.plot.df <- make.ca.plot.df(ca.plot,
+                              row.lab = "Food Groups",
+                              col.lab = "Location")
+ca.plot.df$Size <- ifelse(ca.plot.df$Variable == "Location", 2, 1)
+ca.sum <- summary(ca.fit)
+dim.var.percs <- ca.sum$scree[,"values2"]
+
+p <- ggplot(ca.plot.df, aes(x = Dim1, y = Dim2,
+                            col = Variable, shape = Variable,
+                            label = Label, size = Size)) +
+  geom_vline(xintercept = 0, lty = "dashed", alpha = .5) +
+  geom_hline(yintercept = 0, lty = "dashed", alpha = .5) +
+  geom_point() +
+  scale_x_continuous(limits = range(ca.plot.df$Dim1) + c(diff(range(ca.plot.df$Dim1)) * -0.2,
+                                                         diff(range(ca.plot.df$Dim1)) * 0.2)) +
+  scale_y_continuous(limits = range(ca.plot.df$Dim2) + c(diff(range(ca.plot.df$Dim2)) * -0.2,
+                                                         diff(range(ca.plot.df$Dim2)) * 0.2)) +
+  scale_size(range = c(4, 7)) +
+  geom_label_repel(show.legend = FALSE, segment.alpha = .5, point.padding = unit(5, "points")) +
+  labs(x = paste0("Dimension 1 (", signif(dim.var.percs[1], 3), "%)"),
+       y = paste0("Dimension 2 (", signif(dim.var.percs[2], 3), "%)"),
+       col = "", shape = "") +
+  theme_minimal() + 
+  theme(plot.caption = element_text(size = 16,
+                                    face = "bold"), 
+        panel.grid.major = element_line(colour = "lightgray",  size = 0.6, linetype = "dotted"), 
+        panel.grid.minor = element_line(size = 1.6, linetype = "dotted"), 
+        axis.title = element_text(size = 26), 
+        axis.text = element_text(size = 26, colour = "gray0"), 
+        plot.title = element_text(size = 30,  face = "bold", hjust = 0.5, vjust = 2), 
+        panel.background = element_rect(fill = "white", 
+                                        size = 0), legend.position = "none") +
+  scale_color_manual(values = c("#e41a1c", "#377eb8")) + 
+  labs(title = "Correspondence Analysis of food groups and Time Slots\n among Pre-diabetes participants.",
+       colour = NULL, shape = NULL) +
+  # , caption = "Coordinates in symmetric") +
+  theme(plot.caption = element_text(hjust = 0)) #+ 
+# scale_x_reverse() + 
+   # scale_y_reverse()
+plot(p)

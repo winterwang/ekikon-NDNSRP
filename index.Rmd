@@ -1050,3 +1050,57 @@ DT::datatable(
 background-image: url("./img/F60T7.png")
 background-position: 50% 50%
 background-size: contain
+
+
+---
+background-image: url("./img/F201T7.png")
+background-position: 50% 50%
+background-size: contain
+
+
+
+---
+background-image: url("./img/F202T7.png")
+background-position: 50% 50%
+background-size: contain
+
+
+
+---
+background-image: url("./img/F203T7.png")
+background-position: 50% 50%
+background-size: contain
+
+
+
+---
+class: middle, center, inverse
+
+# Food group consumption and time slots <br> stratified by DM status
+
+
+---
+background-image: url("./img/F60T7_nonDM.png")
+background-position: 50% 50%
+background-size: contain
+
+
+---
+background-image: url("./img/F60T7_DM.png")
+background-position: 50% 50%
+background-size: contain
+
+
+
+---
+background-image: url("./img/F60T7_undiaDM.png")
+background-position: 50% 50%
+background-size: contain
+
+
+
+
+---
+background-image: url("./img/F60T7_PreDM.png")
+background-position: 50% 50%
+background-size: contain

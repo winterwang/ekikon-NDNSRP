@@ -956,7 +956,7 @@ class: middle
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 dt <- read.csv("tab/DMstatus.csv", header = TRUE)
-names(dt) <- c("Diabetes Status", "Self-reported", "Glucose (mmol/L)", "HbA1c (%)")
+names(dt) <- c("Diabetes Status", "Self-reported", "Glucose (mmol/L)", "HbA1c (%)", "n")
 # names(dt)[9] <- "Total"
 # dt[2, 9] <- " "
 # dt[c(4,5), 9] <- " "

@@ -1,5 +1,6 @@
-﻿Diabetes status,Self-reported,Glucose (mmol/L),HbA1c (%)
-No diabetes,No,< 6.1,< 6.5
-Pre-diabetes,No,6.1 ~ 6.99,--
-Undiagnosed,No,>= 7.00,>= 6.5
-Diagnosed,Yes,--,--
+﻿Diabetes status,Self-reported,Glucose (mmol/L),HbA1c (%),n
+No diabetes,No,< 6.1,< 6.5,2626
+Pre-diabetes,No,6.1 ~ 6.99,--,133
+Undiagnosed,No,>= 7.00,>= 6.5,99
+Diagnosed,Yes,--,--,227
+Missing,NA,NA,NA,3717

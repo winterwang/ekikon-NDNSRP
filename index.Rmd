@@ -1133,3 +1133,31 @@ background-size: contain
 background-image: url("./img/F60T7_PreDM.png")
 background-position: 50% 50%
 background-size: contain
+
+
+---
+class:center
+
+##### OR for food groups eaten at night (8pm - ) vs. earlier time, among total and according to DM status
+
+
+
+
+.small[
+```{r echo=FALSE, message=FALSE, eval=TRUE}
+dt <- read.csv("tab/OR_Tslots.csv", header = TRUE)
+names(dt) <- c("H0", "Overall", "Non-DM", "Pre-DM", "Undiag-DM", "DM")
+# names(dt)[9] <- "Total"
+# dt[2, 9] <- " "
+# dt[c(4,5), 9] <- " "
+# dt %>%
+#   kable() %>%
+#   kable_styling(bootstrap_options = c("striped", "hover"))  %>% 
+#   column_spec(1, bold = T)
+
+DT::datatable(
+  head(dt, 9),  escape=FALSE, 
+  fillContainer = FALSE, options = list(pageLength = 3)
+)
+```
+]

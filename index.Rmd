@@ -32,11 +32,11 @@ class: middle
 
 - Relationship between **food consumed** and **eating time** for UK adults according to their diabetes status 
 
---
+<!-- -- -->
 
-### Multilevel Latent Class Analysis:
+<!-- ### Multilevel Latent Class Analysis: -->
 
-- Relationship between **carbohydrate consumption** and **eating time** for UK adults. 
+<!-- - Relationship between **carbohydrate consumption** and **eating time** for UK adults.  -->
 
 ---
 class: middle
@@ -1183,10 +1183,33 @@ background-image: url("./img/CAbook.jpg")
 background-position: 50% 50%
 background-size: contain
 
+---
+class: left
+background-image: url("./img/Screen Shot 2019-09-13 at 22.40.12.png")
+background-position: 50% 50%
+background-size: contain
+
+### The Cholera map
+
+.footnote[
+<html><head></head><body><div class="csl-entry">
+<div class="csl-right-inline">N. Shiode, et. al. International journal of health geographics 2015.</div>
+</body></html>
+]
 
 
 ---
-class: center, middle, inverse
+class: inverse
+background-image: url("./img/Screen Shot 2019-09-13 at 22.29.43.png")
+background-position: 50% 50%
+background-size: contain
+
+
+---
+class: left, bottom, inverse
+background-image: url("./img/IMG_0258.png")
+background-position: 50% 50%
+background-size: contain
 
 # Thanks 
 

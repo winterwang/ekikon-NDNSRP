@@ -1161,3 +1161,32 @@ DT::datatable(
 )
 ```
 ]
+
+
+---
+class: middle 
+
+# Discussion 
+
+- Assessing the relationships between less healthy foods and timing of eating is a first step towards identifying specific public health targets for behaviour change/modification.
+
+- Potentially alcoholic/sweetened beverages and foods rich in added sugars and saturated fats. 
+
+<!-- - The greater odds of eating puddings in the evening might partly explain the undiagnosed/prediabetic state.  -->
+
+- The survey cross-sectional nature warrants further investigations by longitudinal cohort studies.
+
+
+
+---
+background-image: url("./img/CAbook.jpg")
+background-position: 50% 50%
+background-size: contain
+
+
+
+---
+class: center, middle, inverse
+
+# Thanks 
+

@@ -243,6 +243,16 @@ plot(p)
 # stratified by DM status -------------------------------------------------
 load("../CA-NDNSRP/HFood.Rdata")
 
+Foodhghlght <- c("Puddings",
+                 "Reg soft drinks",
+                 "Sugar confectionery",
+                 "Chocolate",
+                 "Spirits and liqueurs",
+                 "Beer lager",
+                 "Ice cream",
+                 "Biscuits",
+                 "Crisps")
+
 ## diagnosed DM ---------------
 DiagDM <- as.logical(HFood$DM4cat.y == 3)
 DiagDMtab <- xtabs(~HFood$mfgLab + HFood$MealTimeSlot, subset = DiagDM)
@@ -297,12 +307,15 @@ ca.plot <- plot(ca.fit)
 ca.plot.df <- make.ca.plot.df(ca.plot,
                               row.lab = "Food Groups",
                               col.lab = "Location")
+ca.plot.df$StrVariable <- ifelse(ca.plot.df$Label %in% Foodhghlght, 
+                              "highlight", ca.plot.df$Variable)
+
 ca.plot.df$Size <- ifelse(ca.plot.df$Variable == "Location", 2, 1)
 ca.sum <- summary(ca.fit)
 dim.var.percs <- ca.sum$scree[,"values2"]
 
 p <- ggplot(ca.plot.df, aes(x = Dim1, y = Dim2,
-                            col = Variable, shape = Variable,
+                            col = StrVariable, shape = Variable,
                             label = Label, size = Size)) +
   geom_vline(xintercept = 0, lty = "dashed", alpha = .5) +
   geom_hline(yintercept = 0, lty = "dashed", alpha = .5) +
@@ -326,11 +339,11 @@ p <- ggplot(ca.plot.df, aes(x = Dim1, y = Dim2,
         plot.title = element_text(size = 30,  face = "bold", hjust = 0.5, vjust = 2), 
         panel.background = element_rect(fill = "white", 
                                         size = 0), legend.position = "none") +
-  scale_color_manual(values = c("#e41a1c", "#377eb8")) + 
-  # labs(title = "Correspondence Analysis of food groups and Time Slots\n among Pre-diabetes participants.",
-       # colour = NULL, shape = NULL) +
+  scale_color_manual(values = c("#4daf4a","#377eb8",  "#e41a1c")) + 
+  labs(title = "Correspondence Analysis of food groups and Time Slots\n among PreDM participants",
+  colour = NULL, shape = NULL) +
   # , caption = "Coordinates in symmetric") +
-  theme(plot.caption = element_text(hjust = 0)) # + 
+  theme(plot.caption = element_text(hjust = 0))  #+ 
 # scale_x_reverse() + 
    # scale_y_reverse()
 plot(p)

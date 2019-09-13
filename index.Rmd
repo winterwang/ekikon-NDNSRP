@@ -1120,13 +1120,13 @@ background-size: contain
 
 
 ---
-background-image: url("./img/F60T7_undiaDM.png")
+background-image: url("./img/F60T7_UndiagDM.png")
 background-position: 50% 50%
 background-size: contain
 
 ???
 
-- Among undiagnosed DM patients, sugar, chocolate, Beer, regular soft drinks, wine, Puddings seems to apear to shown in later time slots. 
+- Among undiagnosed DM patients, sugar, chocolate, Beer, regular soft drinks, wine, ice cream, biscuits, Puddings seems to apear to shown in later time slots. 
 
 
 ---

@@ -1143,7 +1143,7 @@ class:center
 
 
 
-.small[
+.between[
 ```{r echo=FALSE, message=FALSE, eval=TRUE}
 dt <- read.csv("tab/OR_Tslots.csv", header = TRUE)
 names(dt) <- c("H0", "Overall", "Non-DM", "Pre-DM", "Undiag-DM", "DM")
@@ -1157,7 +1157,7 @@ names(dt) <- c("H0", "Overall", "Non-DM", "Pre-DM", "Undiag-DM", "DM")
 
 DT::datatable(
   head(dt, 9),  escape=FALSE, 
-  fillContainer = FALSE, options = list(pageLength = 3)
+  fillContainer = FALSE, options = list(pageLength = 4)
 )
 ```
 ]
@@ -1166,13 +1166,27 @@ DT::datatable(
 ---
 class: middle 
 
-# Discussion 
+# Discussion (1)
+
+
+- All unhealthy foods emerged from CA were significantly more likely to be eaten after 8pm.
+
+- These included alcoholic/sweetened beverages, chocolates and other foods rich in added sugars and saturated fats like biscuits and ice-cream.
+
+- Food and drinks consumed in the evening/night time slot tend to be highly processed and easily accessible.
+
+<!-- - Potentially alcoholic/sweetened beverages and foods rich in added sugars and saturated fats.  -->
+
+<!-- - The greater odds of eating puddings in the evening might partly explain the undiagnosed/prediabetic state.  -->
+
+
+---
+class: middle 
+# Discussion (2)
 
 - Assessing the relationships between less healthy foods and timing of eating is a first step towards identifying specific public health targets for behaviour change/modification.
 
-- Potentially alcoholic/sweetened beverages and foods rich in added sugars and saturated fats. 
-
-<!-- - The greater odds of eating puddings in the evening might partly explain the undiagnosed/prediabetic state.  -->
+- Undiagnosed T2D patients might be at higher risk of causing/worsening their condition as they had higher odds to consume a number of less healthy foods after 8pm (sugar-confectionary, biscuits, sweetened soft drinks and puddings).
 
 - The survey cross-sectional nature warrants further investigations by longitudinal cohort studies.
 

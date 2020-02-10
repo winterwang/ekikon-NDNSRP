@@ -298,9 +298,22 @@ DiagDM.ca <- CA(DiagDMmatrix, graph = FALSE)
 fviz_ca_biplot(DiagDM.ca, 
                repel = TRUE, title = "Biplot of Correspondence analysis among Prediabetes participants.") 
 
+## Total Sample --------
+Totaltab <- xtabs(~HFood$mfgLab + HFood$MealTimeSlot)
+Totalmatrix <- matrix(data = Totaltab, nrow = 60, ncol = 7, 
+                       dimnames = list(rownames(Totaltab), colnames(Totaltab)))
 
+
+## People without DM information --------
+
+MissDM <- is.na(HFood$DM4cat.y)
+MissDMtab <- xtabs(~HFood$mfgLab + HFood$MealTimeSlot, subset = MissDM)
+MissDMmatrix <- matrix(data = MissDMtab, nrow = 60, ncol = 7, 
+                       dimnames = list(rownames(MissDMtab), colnames(MissDMtab)))
 
 ca.fit <- ca(DiagDMmatrix)
+ca.fit <- ca(Totalmatrix)
+ca.fit <- ca(MissDMmatrix)
 ca.plot <- plot(ca.fit)
 
 
@@ -340,10 +353,11 @@ p <- ggplot(ca.plot.df, aes(x = Dim1, y = Dim2,
         panel.background = element_rect(fill = "white", 
                                         size = 0), legend.position = "none") +
   scale_color_manual(values = c("#4daf4a","#377eb8",  "#e41a1c")) + 
-  labs(title = "Correspondence Analysis of food groups and Time Slots\n among PreDM participants",
+  labs(title = "Correspondence Analysis of food groups and Time Slots\n in participants without DM information.",
   colour = NULL, shape = NULL) +
   # , caption = "Coordinates in symmetric") +
   theme(plot.caption = element_text(hjust = 0))  #+ 
 # scale_x_reverse() + 
    # scale_y_reverse()
 plot(p)
+

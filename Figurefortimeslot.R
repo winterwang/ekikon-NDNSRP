@@ -330,8 +330,8 @@ dim.var.percs <- ca.sum$scree[,"values2"]
 p <- ggplot(ca.plot.df, aes(x = Dim1, y = Dim2,
                             col = StrVariable, shape = Variable,
                             label = Label, size = Size)) +
-  geom_vline(xintercept = 0, lty = "dashed", alpha = .5) +
-  geom_hline(yintercept = 0, lty = "dashed", alpha = .5) +
+  geom_vline(xintercept = 0, lty = "dashed", alpha = 1) +
+  geom_hline(yintercept = 0, lty = "dashed", alpha = 1) +
   geom_point() +
   scale_x_continuous(limits = range(ca.plot.df$Dim1) + c(diff(range(ca.plot.df$Dim1)) * -0.2,
                                                          diff(range(ca.plot.df$Dim1)) * 0.2)) +
@@ -352,12 +352,17 @@ p <- ggplot(ca.plot.df, aes(x = Dim1, y = Dim2,
         plot.title = element_text(size = 30,  face = "bold", hjust = 0.5, vjust = 2), 
         panel.background = element_rect(fill = "white", 
                                         size = 0), legend.position = "none") +
-  scale_color_manual(values = c("#4daf4a","#377eb8",  "#e41a1c")) + 
-  labs(title = "Correspondence Analysis of food groups and Time Slots\n in participants without DM information.",
+  scale_color_manual(values = c("#4daf4a", "#e41a1c", "#377eb8")) + 
+  # labs(title = "Correspondence Analysis of food groups and Time Slots\n in participants without DM information.",
+  # labs(title = "Correspondence Analysis of food groups and Time Slots\n in total sample. ",
+  # labs(title = "Correspondence Analysis of food groups and Time Slots\n in pre-diabetics. ",
+  # labs(title = "Correspondence Analysis of food groups and Time Slots\n in non-diabetics. ",
+  # labs(title = "Correspondence Analysis of food groups and Time Slots\n in diabetics. ",
+  labs(title = "Correspondence Analysis of food groups and Time Slots\n in undiagnosed diabetics. ",
   colour = NULL, shape = NULL) +
   # , caption = "Coordinates in symmetric") +
-  theme(plot.caption = element_text(hjust = 0))  #+ 
+  theme(plot.caption = element_text(hjust = 0))  + 
 # scale_x_reverse() + 
-   # scale_y_reverse()
+   scale_y_reverse()
 plot(p)
 
